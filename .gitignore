@@ -1,0 +1,13 @@
+# dependencies
+node_modules/
+
+# production builds
+build/
+dist/
+
+# environment variables
+.env
+.env.local
+
+# OS junk
+.DS_Store
