@@ -23,6 +23,10 @@ body {
   margin: 20px;
 }
 
+.row {
+  display: flex;
+}
+
 .square {
   border: 1px solid #999;
   background-color: inherit;
