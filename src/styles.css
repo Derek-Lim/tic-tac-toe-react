@@ -23,6 +23,12 @@ body {
   margin: 20px;
 }
 
+.game-info {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
 .row {
   display: flex;
 }
