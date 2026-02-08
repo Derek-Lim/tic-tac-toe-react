@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 function Square({ value, onSquareClick }) {
   return (
@@ -15,9 +15,9 @@ function Board({ xIsNext, squares, onPlay }) {
     }
     const nextSquares = squares.slice();
     if (xIsNext) {
-      nextSquares[i] = "X";
+      nextSquares[i] = 'X';
     } else {
-      nextSquares[i] = "O";
+      nextSquares[i] = 'O';
     }
     onPlay(nextSquares);
   }
@@ -25,9 +25,9 @@ function Board({ xIsNext, squares, onPlay }) {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = "Winner: " + winner;
+    status = 'Winner: ' + winner;
   } else {
-    status = "Next player: " + (xIsNext ? "X" : "O");
+    status = 'Next player: ' + (xIsNext ? 'X' : 'O');
   }
 
   function renderSquare(i) {
@@ -84,15 +84,15 @@ export default function Game() {
   const moves = moveIndices.map((moveIndex) => {
     let description;
     if (moveIndex > 0) {
-      description = "Go to move #" + moveIndex;
+      description = 'Go to move #' + moveIndex;
     } else {
-      description = "Go to game start";
+      description = 'Go to game start';
     }
 
     return (
       <li key={moveIndex}>
         {moveIndex === currentMove ? (
-          <span>{"You are at move #" + moveIndex}</span>
+          <span>{'You are at move #' + moveIndex}</span>
         ) : (
           <button onClick={() => jumpTo(moveIndex)}>{description}</button>
         )}
@@ -111,7 +111,7 @@ export default function Game() {
       </div>
       <div className="game-info">
         <button className="move-order-toggle" onClick={toggleMoveOrder}>
-          {isAscending ? "Ascending" : "Descending"}
+          {isAscending ? 'Ascending' : 'Descending'}
         </button>
         <ol className="move-list">{moves}</ol>
       </div>
