@@ -63,6 +63,7 @@ function Board({ xIsNext, squares, onPlay }) {
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
+  const [isAscending, setIsAscending] = useState(true);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
@@ -76,23 +77,32 @@ export default function Game() {
     setCurrentMove(nextMove);
   }
 
-  const moves = history.map((squares, move) => {
+  const moveIndices = isAscending
+    ? history.map((_, i) => i)
+    : history.map((_, i) => history.length - 1 - i);
+
+  const moves = moveIndices.map((moveIndex) => {
     let description;
-    if (move > 0) {
-      description = "Go to move #" + move;
+    if (moveIndex > 0) {
+      description = "Go to move #" + moveIndex;
     } else {
       description = "Go to game start";
     }
+
     return (
-      <li key={move}>
-        {move === currentMove ? (
-          <span>{"You are at move #" + move}</span>
+      <li key={moveIndex}>
+        {moveIndex === currentMove ? (
+          <span>{"You are at move #" + moveIndex}</span>
         ) : (
-          <button onClick={() => jumpTo(move)}>{description}</button>
+          <button onClick={() => jumpTo(moveIndex)}>{description}</button>
         )}
       </li>
     );
   });
+
+  function toggleMoveOrder() {
+    setIsAscending((prev) => !prev);
+  }
 
   return (
     <div className="game">
@@ -100,6 +110,9 @@ export default function Game() {
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
+        <button className="move-order-toggle" onClick={toggleMoveOrder}>
+          {isAscending ? "Ascending" : "Descending"}
+        </button>
         <ol className="move-list">{moves}</ol>
       </div>
     </div>

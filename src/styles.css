@@ -89,6 +89,10 @@ body {
   margin-left: 20px;
 }
 
+.move-order-toggle {
+  margin-left: 30px;
+}
+
 .move-list {
   font-size: 14px;
 }
