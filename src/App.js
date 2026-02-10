@@ -1,5 +1,24 @@
 import { useState } from 'react';
 
+// =====================
+// Constants
+// =====================
+const BOARD_SIZE = 3;
+
+const WINNING_LINES = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+// =====================
+// Components
+// =====================
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -9,8 +28,6 @@ function Square({ value, onSquareClick }) {
 }
 
 function Board({ xIsNext, squares, onPlay }) {
-  const size = 3;
-
   const winner = calculateWinner(squares);
   const status = winner
     ? `Winner: ${winner}`
@@ -29,10 +46,11 @@ function Board({ xIsNext, squares, onPlay }) {
   return (
     <>
       <div className="status">{status}</div>
-      {Array.from({ length: size }).map((_, row) => (
+
+      {Array.from({ length: BOARD_SIZE }).map((_, row) => (
         <div key={row} className="board-row">
-          {Array.from({ length: size }).map((_, col) => {
-            const index = row * size + col;
+          {Array.from({ length: BOARD_SIZE }).map((_, col) => {
+            const index = row * BOARD_SIZE + col;
             return (
               <Square
                 key={index}
@@ -51,6 +69,7 @@ export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const [isAscending, setIsAscending] = useState(true);
+
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
@@ -69,9 +88,8 @@ export default function Game() {
     : history.map((_, i) => history.length - 1 - i);
 
   const moves = moveIndices.map((moveIndex) => {
-    const description = moveIndex > 0
-      ? `Go to move #${moveIndex}`
-      : 'Go to game start';
+    const description =
+      moveIndex > 0 ? `Go to move #${moveIndex}` : 'Go to game start';
 
     return (
       <li key={moveIndex}>
@@ -93,6 +111,7 @@ export default function Game() {
       <div className="game-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
+
       <div className="game-info">
         <button className="move-order-toggle" onClick={toggleMoveOrder}>
           {isAscending ? 'Ascending' : 'Descending'}
@@ -103,19 +122,11 @@ export default function Game() {
   );
 }
 
+// =====================
+// Helpers
+// =====================
 function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  for (const [a, b, c] of lines) {
+  for (const [a, b, c] of WINNING_LINES) {
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
     }
