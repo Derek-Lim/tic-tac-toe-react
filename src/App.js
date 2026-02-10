@@ -14,11 +14,13 @@ function Board({ xIsNext, squares, onPlay }) {
   const winner = calculateWinner(squares);
   const status = winner
     ? `Winner: ${winner}`
-    : `Next player: ${xIsNext ? 'X' : 'O'}`;
+    : isBoardFull(squares)
+      ? 'Draw'
+      : `Next player: ${xIsNext ? 'X' : 'O'}`;
 
   function handleClick(i) {
     if (winner || squares[i]) return;
-    
+
     const nextSquares = squares.slice();
     nextSquares[i] = xIsNext ? 'X' : 'O';
     onPlay(nextSquares);
@@ -119,4 +121,8 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function isBoardFull(squares) {
+  return squares.every((square) => square !== null);
 }
