@@ -19,16 +19,22 @@ const WINNING_LINES = [
 // =====================
 // Components
 // =====================
-function Square({ value, onSquareClick }) {
+function Square({ value, isHighlighted, onSquareClick }) {
   return (
-    <button className="square" onClick={onSquareClick}>
+    <button
+      className={`square ${isHighlighted ? 'highlight' : ''}`}
+      onClick={onSquareClick}
+    >
       {value}
     </button>
   );
 }
 
 function Board({ xIsNext, squares, onPlay }) {
-  const winner = calculateWinner(squares);
+  const winnerResult = calculateWinner(squares);
+  const winner = winnerResult?.player;
+  const winningLine = winnerResult?.line ?? [];
+
   const status = winner
     ? `Winner: ${winner}`
     : isBoardFull(squares)
@@ -51,10 +57,12 @@ function Board({ xIsNext, squares, onPlay }) {
         <div key={row} className="board-row">
           {Array.from({ length: BOARD_SIZE }).map((_, col) => {
             const index = row * BOARD_SIZE + col;
+            const isWinningSquare = winningLine.includes(index);
             return (
               <Square
                 key={index}
                 value={squares[index]}
+                isHighlighted={isWinningSquare}
                 onSquareClick={() => handleClick(index)}
               />
             );
@@ -126,9 +134,12 @@ export default function Game() {
 // Helpers
 // =====================
 function calculateWinner(squares) {
-  for (const [a, b, c] of WINNING_LINES) {
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+  for (const line of WINNING_LINES) {
+    const [a, b, c] = line;
+    const player = squares[a];
+
+    if (player && player === squares[b] && player === squares[c]) {
+      return { player, line };
     }
   }
   return null;

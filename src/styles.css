@@ -69,6 +69,11 @@ body {
   padding: 0;
   text-align: center;
   width: 34px;
+  transition: background-color 120ms ease-out;
+}
+
+.square.highlight {
+  background-color: #fff3bf;
 }
 
 .board-row:after {
