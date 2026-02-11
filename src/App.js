@@ -96,15 +96,41 @@ export default function Game() {
     : history.map((_, i) => history.length - 1 - i);
 
   const moves = moveIndices.map((moveIndex) => {
-    const description =
-      moveIndex > 0 ? `Go to move #${moveIndex}` : 'Go to game start';
+    const isCurrent = moveIndex === currentMove;
+
+    if (moveIndex === 0) {
+      return (
+        <li key={moveIndex}>
+          {isCurrent ? (
+            <span>You are at game start</span>
+          ) : (
+            <button onClick={() => jumpTo(0)}>Go to game start</button>
+          )}
+        </li>
+      );
+    }
+
+    const details = getMoveDetails(history[moveIndex - 1], history[moveIndex]);
+
+    const renderMeta = details && (
+      <span>
+        {' — '}
+        {details.marker} ({details.row}, {details.col})
+      </span>
+    );
 
     return (
       <li key={moveIndex}>
-        {moveIndex === currentMove ? (
-          <span>{`You are at move #${moveIndex}`}</span>
+        {isCurrent ? (
+          <span>
+            You are at move #{moveIndex}
+            {renderMeta}
+          </span>
         ) : (
-          <button onClick={() => jumpTo(moveIndex)}>{description}</button>
+          <button onClick={() => jumpTo(moveIndex)}>
+            <span>Go to move #{moveIndex}</span>
+            {renderMeta}
+          </button>
         )}
       </li>
     );
@@ -147,4 +173,23 @@ function calculateWinner(squares) {
 
 function isBoardFull(squares) {
   return squares.every((square) => square !== null);
+}
+
+function indexToRowCol(index) {
+  const row = Math.floor(index / BOARD_SIZE);
+  const col = index % BOARD_SIZE;
+  return { row, col };
+}
+
+function getMoveDetails(prevSquares, nextSquares) {
+  const changedIndex = nextSquares.findIndex(
+    (value, i) => value !== prevSquares[i],
+  );
+
+  if (changedIndex === -1) return null;
+
+  const marker = nextSquares[changedIndex];
+  const { row, col } = indexToRowCol(changedIndex);
+
+  return { marker, row, col };
 }
