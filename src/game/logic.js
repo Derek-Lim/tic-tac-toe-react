@@ -5,8 +5,8 @@ import { BOARD_SIZE, WINNING_LINES } from './constants';
 // =====================
 function indexToRowCol(index) {
   return {
-    row: Math.floor(index / BOARD_SIZE),
-    col: index % BOARD_SIZE,
+    row: Math.floor(index / BOARD_SIZE) + 1,
+    col: index % BOARD_SIZE + 1,
   };
 }
 
