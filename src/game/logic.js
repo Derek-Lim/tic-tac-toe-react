@@ -19,10 +19,10 @@ export function calculateWinner(squares) {
     const player = squares[a];
 
     if (player && player === squares[b] && player === squares[c]) {
-      return { player, line };
+      return { winner: player, winningLine: line };
     }
   }
-  return null;
+  return { winner: null, winningLine: [] };
 }
 
 export function isBoardFull(squares) {

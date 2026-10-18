@@ -3,9 +3,7 @@ import { BOARD_SIZE } from '../game/constants';
 import { calculateWinner, isBoardFull } from '../game/logic';
 
 export default function Board({ xIsNext, squares, onPlay }) {
-  const winnerResult = calculateWinner(squares);
-  const winner = winnerResult?.player;
-  const winningLine = winnerResult?.line ?? [];
+  const { winner, winningLine } = calculateWinner(squares);
 
   const status = winner
     ? `Winner: ${winner}`
