@@ -1,45 +1,51 @@
 import Square from './Square';
 import { BOARD_SIZE } from '../game/constants';
-import { calculateWinner, isBoardFull } from '../game/logic';
+import { calculateWinner } from '../game/logic';
 
 export default function Board({ xIsNext, squares, onPlay }) {
   const { winner, winningLine } = calculateWinner(squares);
 
-  const status = winner
-    ? `Winner: ${winner}`
-    : isBoardFull(squares)
-      ? 'Draw'
-      : `Next player: ${xIsNext ? 'X' : 'O'}`;
-
-  function handleClick(index) {
-    if (winner || squares[index]) return;
+  function handleClick(squareIndex) {
+    if (winner || squares[squareIndex]) return;
 
     const nextSquares = squares.slice();
-    nextSquares[index] = xIsNext ? 'X' : 'O';
+    nextSquares[squareIndex] = xIsNext ? 'X' : 'O';
     onPlay(nextSquares);
   }
 
+  const isBoardFull = squares.every(square => square !== null);
+
+  const status = winner
+    ? `Winner: ${winner}`
+    : isBoardFull
+      ? 'Draw'
+      : `Next player: ${xIsNext ? 'X' : 'O'}`;
+
+  const boardRows = Array.from(
+    { length: BOARD_SIZE },
+    (_, rowIndex) => (
+      <div className="board-row" key={rowIndex}>
+        {Array.from({ length: BOARD_SIZE }, (_, colIndex) => {
+          const squareIndex = rowIndex * BOARD_SIZE + colIndex;
+          const isWinningSquare = winningLine.includes(squareIndex);
+
+          return (
+            <Square
+              key={squareIndex}
+              value={squares[squareIndex]}
+              isHighlighted={isWinningSquare}
+              onSquareClick={() => handleClick(squareIndex)}
+            />
+          );
+        })}
+      </div>
+    )
+  );
+
   return (
-    <>
+    <div className="game-board">
       <div className="status">{status}</div>
-
-      {Array.from({ length: BOARD_SIZE }).map((_, row) => (
-        <div key={row} className="board-row">
-          {Array.from({ length: BOARD_SIZE }).map((_, col) => {
-            const index = row * BOARD_SIZE + col;
-            const isWinningSquare = winningLine.includes(index);
-
-            return (
-              <Square
-                key={index}
-                value={squares[index]}
-                isHighlighted={isWinningSquare}
-                onSquareClick={() => handleClick(index)}
-              />
-            );
-          })}
-        </div>
-      ))}
-    </>
+      {boardRows}
+    </div>
   );
 }

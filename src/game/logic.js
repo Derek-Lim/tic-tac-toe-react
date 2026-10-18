@@ -25,10 +25,6 @@ export function calculateWinner(squares) {
   return { winner: null, winningLine: [] };
 }
 
-export function isBoardFull(squares) {
-  return squares.every((square) => square !== null);
-}
-
 export function getMoveDetails(prevSquares, nextSquares) {
   const changedIndex = nextSquares.findIndex(
     (value, i) => value !== prevSquares[i],

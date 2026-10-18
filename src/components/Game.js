@@ -71,9 +71,11 @@ export default function Game() {
 
   return (
     <div className="game">
-      <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      </div>
+      <Board
+        xIsNext={xIsNext}
+        squares={currentSquares}
+        onPlay={handlePlay}
+      />
 
       <div className="game-info">
         <button className="move-order-toggle" onClick={toggleMoveOrder}>
