@@ -24,11 +24,7 @@ export default function Game() {
     setIsAscending((prev) => !prev);
   }
 
-  const moveIndices = isAscending
-    ? history.map((_, i) => i)
-    : history.map((_, i) => history.length - 1 - i);
-
-  const moves = moveIndices.map((moveIndex) => {
+  const moveListItems = history.map((_, moveIndex) => {
     const isCurrent = moveIndex === currentMove;
 
     if (moveIndex === 0) {
@@ -78,10 +74,16 @@ export default function Game() {
       />
 
       <div className="game-info">
-        <button className="move-order-toggle" onClick={toggleMoveOrder}>
-          {isAscending ? 'Ascending' : 'Descending'}
+        <button
+          className="move-order-toggle"
+          onClick={toggleMoveOrder}
+        >
+          {isAscending ? 'Show newest first' : 'Show oldest first'}
         </button>
-        <ol className="move-list">{moves}</ol>
+
+        <ol className="move-list">
+          {isAscending ? moveListItems : moveListItems.toReversed()}
+        </ol>
       </div>
     </div>
   );
