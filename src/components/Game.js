@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import { BOARD_SIZE } from '../game/constants';
 import Board from './Board';
 import MoveHistory from './MoveHistory';
 
 export default function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [history, setHistory] = useState([
+    Array(BOARD_SIZE * BOARD_SIZE).fill(null),
+  ]);
   const [currentMove, setCurrentMove] = useState(0);
 
   const xIsNext = currentMove % 2 === 0;
