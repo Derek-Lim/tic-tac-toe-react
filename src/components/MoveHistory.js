@@ -5,48 +5,30 @@ export default function MoveHistory({ history, currentMove, onJumpTo }) {
   const [isAscending, setIsAscending] = useState(true);
 
   function toggleMoveOrder() {
-    setIsAscending((prev) => !prev);
+    setIsAscending((previousIsAscending) => !previousIsAscending);
   }
 
-  const moveListItems = history.map((_, moveIndex) => {
-    const isCurrent = moveIndex === currentMove;
+  const moveListItems = history.map((squares, moveIndex) => {
+    const isCurrentMove = moveIndex === currentMove;
+    const moveLabel = moveIndex === 0 ? 'game start' : `move #${moveIndex}`;
 
-    if (moveIndex === 0) {
-      return (
-        <li key={moveIndex}>
-          {isCurrent ? (
-            <span>You are at game start</span>
-          ) : (
-            <button onClick={() => onJumpTo(0)}>Go to game start</button>
-          )}
-        </li>
-      );
-    }
+    const moveDetails =
+      moveIndex === 0 ? null : getMoveDetails(history[moveIndex - 1], squares);
 
-    const details = getMoveDetails(history[moveIndex - 1], history[moveIndex]);
+    const detailsLabel = moveDetails
+      ? ` — ${moveDetails.marker} (${moveDetails.row}, ${moveDetails.col})`
+      : '';
 
-    const renderMeta = details && (
-      <span>
-        {' — '}
-        {details.marker} ({details.row}, {details.col})
-      </span>
+    const moveDescription = isCurrentMove ? (
+      `You are at ${moveLabel}${detailsLabel}`
+    ) : (
+      <button onClick={() => onJumpTo(moveIndex)}>
+        Go to {moveLabel}
+        {detailsLabel}
+      </button>
     );
 
-    return (
-      <li key={moveIndex}>
-        {isCurrent ? (
-          <span>
-            You are at move #{moveIndex}
-            {renderMeta}
-          </span>
-        ) : (
-          <button onClick={() => onJumpTo(moveIndex)}>
-            <span>Go to move #{moveIndex}</span>
-            {renderMeta}
-          </button>
-        )}
-      </li>
-    );
+    return <li key={moveIndex}>{moveDescription}</li>;
   });
 
   return (
