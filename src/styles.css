@@ -46,10 +46,6 @@ ul {
   padding-inline-start: 20px;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 body {
   font-family: sans-serif;
   margin: 20px;
