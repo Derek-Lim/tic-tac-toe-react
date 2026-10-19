@@ -1,9 +1,8 @@
-export default function Square({ value, isHighlighted, onSquareClick }) {
+export default function Square({ value, label, isHighlighted, onSquareClick }) {
+  const className = isHighlighted ? 'square highlight' : 'square';
+
   return (
-    <button
-      className={`square ${isHighlighted ? 'highlight' : ''}`}
-      onClick={onSquareClick}
-    >
+    <button className={className} aria-label={label} onClick={onSquareClick}>
       {value}
     </button>
   );

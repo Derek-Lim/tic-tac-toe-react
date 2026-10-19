@@ -13,7 +13,7 @@ export default function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
-  const isBoardFull = squares.every(square => square !== null);
+  const isBoardFull = squares.every((square) => square !== null);
 
   const status = winner
     ? `Winner: ${winner}`
@@ -21,30 +21,32 @@ export default function Board({ xIsNext, squares, onPlay }) {
       ? 'Draw'
       : `Next player: ${xIsNext ? 'X' : 'O'}`;
 
-  const boardRows = Array.from(
-    { length: BOARD_SIZE },
-    (_, rowIndex) => (
-      <div className="board-row" key={rowIndex}>
-        {Array.from({ length: BOARD_SIZE }, (_, colIndex) => {
-          const squareIndex = rowIndex * BOARD_SIZE + colIndex;
-          const isWinningSquare = winningLine.includes(squareIndex);
+  const boardRows = Array.from({ length: BOARD_SIZE }, (_, rowIndex) => (
+    <div className="board-row" key={rowIndex}>
+      {Array.from({ length: BOARD_SIZE }, (_, colIndex) => {
+        const squareIndex = rowIndex * BOARD_SIZE + colIndex;
+        const value = squares[squareIndex];
+        const isWinningSquare = winningLine.includes(squareIndex);
+        const squareLabel = `Row ${rowIndex + 1}, column ${colIndex + 1}: ${value ?? 'empty'}`;
 
-          return (
-            <Square
-              key={squareIndex}
-              value={squares[squareIndex]}
-              isHighlighted={isWinningSquare}
-              onSquareClick={() => handleClick(squareIndex)}
-            />
-          );
-        })}
-      </div>
-    )
-  );
+        return (
+          <Square
+            key={squareIndex}
+            value={value}
+            label={squareLabel}
+            isHighlighted={isWinningSquare}
+            onSquareClick={() => handleClick(squareIndex)}
+          />
+        );
+      })}
+    </div>
+  ));
 
   return (
     <div className="game-board">
-      <div className="status">{status}</div>
+      <div className="status" role="status">
+        {status}
+      </div>
       {boardRows}
     </div>
   );
