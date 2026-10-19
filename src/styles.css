@@ -46,10 +46,23 @@ ul {
   padding-inline-start: 20px;
 }
 
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
+.game-settings {
+  margin-bottom: 25px;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.board-row:after {
+  clear: both;
+  content: '';
+  display: table;
 }
 
 .square {
@@ -70,20 +83,6 @@ body {
 
 .square.highlight {
   background-color: #fff3bf;
-}
-
-.board-row:after {
-  clear: both;
-  content: '';
-  display: table;
-}
-
-.status {
-  margin-bottom: 10px;
-}
-.game {
-  display: flex;
-  flex-direction: row;
 }
 
 .game-info {

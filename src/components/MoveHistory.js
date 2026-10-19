@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { getMoveDetails } from '../game/logic';
 
-export default function MoveHistory({ history, currentMove, onJumpTo }) {
+export default function MoveHistory({
+  boardSize,
+  history,
+  currentMove,
+  onJumpTo,
+}) {
   const [isAscending, setIsAscending] = useState(true);
 
   function toggleMoveOrder() {
@@ -13,7 +18,9 @@ export default function MoveHistory({ history, currentMove, onJumpTo }) {
     const moveLabel = moveIndex === 0 ? 'game start' : `move #${moveIndex}`;
 
     const moveDetails =
-      moveIndex === 0 ? null : getMoveDetails(history[moveIndex - 1], squares);
+      moveIndex === 0
+        ? null
+        : getMoveDetails(history[moveIndex - 1], squares, boardSize);
 
     const detailsLabel = moveDetails
       ? ` — ${moveDetails.marker} (${moveDetails.row}, ${moveDetails.col})`

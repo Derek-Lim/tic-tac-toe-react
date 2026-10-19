@@ -1,9 +1,9 @@
 import Square from './Square';
-import { BOARD_SIZE } from '../game/constants';
-import { calculateWinner } from '../game/logic';
+import { generateWinningLines, calculateWinner } from '../game/logic';
 
-export default function Board({ xIsNext, squares, onPlay }) {
-  const { winner, winningLine } = calculateWinner(squares);
+export default function Board({ boardSize, xIsNext, squares, onPlay }) {
+  const winningLines = generateWinningLines(boardSize);
+  const { winner, winningLine } = calculateWinner(squares, winningLines);
 
   function handleClick(squareIndex) {
     if (winner || squares[squareIndex]) return;
@@ -21,10 +21,10 @@ export default function Board({ xIsNext, squares, onPlay }) {
       ? 'Draw'
       : `Next player: ${xIsNext ? 'X' : 'O'}`;
 
-  const boardRows = Array.from({ length: BOARD_SIZE }, (_, rowIndex) => (
+  const boardRows = Array.from({ length: boardSize }, (_, rowIndex) => (
     <div className="board-row" key={rowIndex}>
-      {Array.from({ length: BOARD_SIZE }, (_, colIndex) => {
-        const squareIndex = rowIndex * BOARD_SIZE + colIndex;
+      {Array.from({ length: boardSize }, (_, colIndex) => {
+        const squareIndex = rowIndex * boardSize + colIndex;
         const value = squares[squareIndex];
         const isWinningSquare = winningLine.includes(squareIndex);
         const squareLabel = `Row ${rowIndex + 1}, column ${colIndex + 1}: ${value ?? 'empty'}`;
