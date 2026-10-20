@@ -1,5 +1,7 @@
-export function generateWinningLines(size) {
-  if (!Number.isInteger(size) || size <= 0) return [];
+// =====================
+// Internal helpers (module-private)
+// =====================
+function generateWinningLines(size) {
   if (size === 1) return [[0]];
 
   const indices = Array.from({ length: size }, (_, index) => index);
@@ -18,13 +20,24 @@ export function generateWinningLines(size) {
   return [...horizontalLines, ...verticalLines, mainDiagonal, antiDiagonal];
 }
 
-export function calculateWinner(squares, winningLines) {
+// =====================
+// Public API (exports)
+// =====================
+export function calculateWinner(squares) {
+  const boardSize = Math.sqrt(squares.length);
+
+  if (!Number.isInteger(boardSize) || boardSize < 1) {
+    throw new Error('Expected a non-empty square board.');
+  }
+
+  const winningLines = generateWinningLines(boardSize);
+
   for (const line of winningLines) {
     const player = squares[line[0]];
     if (!player) continue;
 
     const isWinningLine = line.every(
-      (squareIndex) => squares[squareIndex] === player,
+      squareIndex => squares[squareIndex] === player
     );
 
     if (isWinningLine) {

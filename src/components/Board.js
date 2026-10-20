@@ -1,9 +1,8 @@
 import Square from './Square';
-import { generateWinningLines, calculateWinner } from '../game/logic';
+import { calculateWinner } from '../game/logic';
 
 export default function Board({ boardSize, xIsNext, squares, onPlay }) {
-  const winningLines = generateWinningLines(boardSize);
-  const { winner, winningLine } = calculateWinner(squares, winningLines);
+  const { winner, winningLine } = calculateWinner(squares);
 
   function handleClick(squareIndex) {
     if (winner || squares[squareIndex]) return;
